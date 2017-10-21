@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0" xmlns:jfx="http://javafx.com" href="JugueteriaWonkaFX.jnlp">
+  <information>
+    <title>JugueteriaWonkaFX</title>
+    <vendor>Josem</vendor>
+    <description>null</description>
+    <offline-allowed/>
+  </information>
+  <resources>
+    <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
+    <jar href="JugueteriaWonkaFX.jar" size="47726" download="eager" />
+    <jar href="lib\bridj-0.6.2.jar" size="878674" download="eager" />
+    <jar href="lib\jwebcam8.jar" size="29673" download="eager" />
+    <jar href="lib\slf4j-api-1.7.2.jar" size="26083" download="eager" />
+    <jar href="lib\sqljdbc41.jar" size="586192" download="eager" />
+    <jar href="lib\webcam-capture-0.3.10.jar" size="409084" download="eager" />
+  </resources>
+  <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="JugueteriaWonkaFX" >
+    <param name="requiredFXVersion" value="8.0+"/>
+  </applet-desc>
+  <jfx:javafx-desc  width="800" height="600" main-class="org.jwonkafx.gui.MainWindow"  name="JugueteriaWonkaFX" />
+  <update check="always"/>
+</jnlp>

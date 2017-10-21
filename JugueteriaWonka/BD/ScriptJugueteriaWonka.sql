@@ -1,0 +1,167 @@
+--DROP DATABASE IF EXISTS JugueteriaWonka;
+
+CREATE DATABASE JugueteriaWonka;
+GO
+USE JugueteriaWonka;													--SQL JDVC
+GO
+CREATE TABLE Persona(
+	IdPersona INT NOT NULL PRIMARY KEY IDENTITY (1,1),
+	Nombre VARCHAR(50) NOT NULL,
+	ApellidoPaterno VARCHAR(50) NOT NULL,
+	ApellidoMaterno VARCHAR(50) DEFAULT '',--Genera un valor Vacío.
+	Genero VARCHAR(2) DEFAULT 'O',
+	Rfc VARCHAR(14),
+	Curp VARCHAR(20),
+	FechaNacimiento DATE,
+	Cp VARCHAR(15),
+	Fotografia TEXT,--Se guardará la Imagen como texto.			
+	Domicilio VARCHAR(128) DEFAULT ''		
+);
+GO
+CREATE TABLE Cliente(
+	IdCliente INT NOT NULL PRIMARY KEY IDENTITY(1,1),
+	Email VARCHAR(128) DEFAULT '',
+	Telefono VARCHAR(20) DEFAULT '',
+	Activo INT DEFAULT 1,
+	IdPersona INT NOT NULL
+);
+GO
+CREATE TABLE Empleado(
+	IdEmpleado INT NOT NULL PRIMARY KEY IDENTITY(1,1),
+	Salario FLOAT,
+	Codigo VARCHAR(20) UNIQUE,
+	FechaIngreso DATETIME,
+	Activo INT DEFAULT 1,
+	IdPersona INT NOT NULL,
+	IdUsuario INT NOT NULL
+);
+GO
+
+CREATE TABLE Usuario(
+	IdUsuario INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[Password] VARCHAR(64),
+	Username VARCHAR(64),
+	Activo INT DEFAULT 1,
+	IdRol INT NOT NULL
+);
+GO
+CREATE TABLE Rol(
+	IdRol INT NOT NULL PRIMARY KEY IDENTITY(1,1),
+	Descripcion VARCHAR(30)
+);
+GO
+CREATE TABLE Producto(
+	IdProducto INT NOT NULL PRIMARY KEY IDENTITY(1,1),
+	Nombre VARCHAR(50) NOT NULL DEFAULT '',
+	EdadMinima INT NOT NULL DEFAULT 0,
+	EdadMaxima INT NOT NULL DEFAULT 99,
+	Descripcion VARCHAR(180) NOT NULL DEFAULT '',
+	Precio FLOAT NOT NULL DEFAULT 0.0,
+	Stock INT NOT NULL DEFAULT 0,
+	Fotografia TEXT,
+	Activo INT NOT NULL DEFAULT 1,
+	IdMarca INT NOT NULL
+);
+GO
+CREATE TABLE Marca(
+	IdMarca INT NOT NULL PRIMARY KEY IDENTITY(1,1),
+	Nombre VARCHAR(50) NOT NULL DEFAULT ''
+);
+GO
+CREATE TABLE Venta(
+	IdVenta INT NOT NULL PRIMARY KEY IDENTITY(1,1),
+	Fecha DATETIME NOT NULL DEFAULT GETDATE(),
+	IdEmpleado INT NOT NULL,
+	IdCliente INT NOT NULL,
+	IdFormaPago INT NOT NULL
+);
+GO
+
+CREATE TABLE FormaPago(
+	IdFormaPago INT NOT NULL PRIMARY KEY IDENTITY(1,1),
+	Descripcion VARCHAR(180) NOT NULL DEFAULT ''
+);
+GO
+
+CREATE TABLE DetalleVenta(
+	IdDetalleVenta INT NOT NULL PRIMARY KEY IDENTITY(1,1),
+	CantidadProducto INT,
+	Precio FLOAT,
+	IdVenta INT NOT NULL,
+	IdProducto INT NOT NULL
+);
+GO
+
+CREATE TABLE Bitacora(
+	IdBitacora INT NOT NULL PRIMARY KEY IDENTITY(1,1),
+	FechaAbastecimiento DATETIME NOT NULL DEFAULT GETDATE()
+);
+GO
+
+CREATE TABLE DetalleBitacora(
+	IdDetalleBitacora INT NOT NULL PRIMARY KEY IDENTITY(1,1),
+	Cantidad INT NOT NULL DEFAULT 1,
+	PrecioCompra FLOAT NOT NULL DEFAULT 0,
+	IdBitacora INT NOT NULL,
+	IdProducto INT NOT NULL);
+GO
+---Subir 2 imágenes de 128*128 de juguetes por persona
+ALTER TABLE Cliente ADD CONSTRAINT FK_ClientePersona  
+FOREIGN KEY (IdPersona) REFERENCES Persona(IdPersona)
+GO
+
+ALTER TABLE Empleado ADD CONSTRAINT FK_EmpleadoPersona  
+FOREIGN KEY (IdPersona) REFERENCES Persona(IdPersona);
+GO
+
+ALTER TABLE Empleado ADD CONSTRAINT FK_EmpleadoUsuario
+FOREIGN KEY (IdUsuario) REFERENCES Usuario(IdUsuario);
+GO
+
+ALTER TABLE Usuario ADD CONSTRAINT FK_UsuarioRol
+FOREIGN KEY (IdRol) REFERENCES Rol(IdRol);
+GO
+
+ALTER TABLE Venta ADD CONSTRAINT FK_VentaFormaPago
+FOREIGN KEY (IdFormaPago) REFERENCES FormaPago(IdFormaPago);
+GO
+
+ALTER TABLE Venta ADD CONSTRAINT FK_VentaCliente
+FOREIGN KEY (IdCliente) REFERENCES Cliente(IdCliente);
+GO
+
+ALTER TABLE Venta ADD CONSTRAINT FK_VentaEmpleado
+FOREIGN KEY (IdEmpleado) REFERENCES Empleado(IdEmpleado);
+GO
+
+
+
+ALTER TABLE DetalleVenta ADD CONSTRAINT FK_DetalleVentaProducto
+FOREIGN KEY (IdProducto) REFERENCES Producto(IdProducto);
+GO
+
+
+ALTER TABLE DetalleVenta ADD CONSTRAINT FK_DetalleVentaVenta
+FOREIGN KEY (IdVenta) REFERENCES Venta(IdVenta);
+GO
+
+
+ALTER TABLE DetalleBitacora ADD CONSTRAINT FK_DetalleBitacoraProducto
+FOREIGN KEY (IdProducto) REFERENCES Producto(IdProducto);
+GO
+
+ALTER TABLE DetalleBitacora ADD CONSTRAINT FK_DetalleBitacoraBitacora
+FOREIGN KEY (IdBitacora) REFERENCES Bitacora(IdBitacora);
+GO
+
+
+
+ALTER TABLE Producto ADD CONSTRAINT FK_ProductoMarca
+FOREIGN KEY (IdMarca) REFERENCES Marca(IdMarca);
+GO
+
+
+
+
+
+
