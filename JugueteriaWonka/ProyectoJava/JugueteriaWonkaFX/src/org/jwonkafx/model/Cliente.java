@@ -1,88 +1,52 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.jwonkafx.model;
-
-/**
- *
- * @author Josem
- */
-public class Cliente {
-
-    /**
-     * @return the IdCliente
-     */
-    public int getIdCliente() {
-        return IdCliente;
+public class Cliente 
+{
+    private int id;
+    private String email;
+    private String telefono;
+    private int activo;
+    private Persona persona;
+    public Cliente()
+    {
+        persona=new Persona();
     }
-
-    /**
-     * @param IdCliente the IdCliente to set
-     */
-    public void setIdCliente(int IdCliente) {
-        this.IdCliente = IdCliente;
+    public int getId() {
+        return id;
     }
-
-    /**
-     * @return the Email
-     */
-    public String getEmail() {
-        return Email;
+    public void setId(int id)
+    {
+        this.id = id;
     }
-
-    /**
-     * @param Email the Email to set
-     */
-    public void setEmail(String Email) {
-        this.Email = Email;
+    public String getEmail()
+    {
+        return email;
     }
-
-    /**
-     * @return the Telefono
-     */
-    public String getTelefono() {
-        return Telefono;
+    public void setEmail(String email)
+    {
+        this.email = email;
     }
-
-    /**
-     * @param Telefono the Telefono to set
-     */
-    public void setTelefono(String Telefono) {
-        this.Telefono = Telefono;
+    public String getTelefono()
+    {
+        return telefono;
     }
-
-    /**
-     * @return the Activo
-     */
-    public int getActivo() {
-        return Activo;
+    public void setTelefono(String telefono)
+    {
+        this.telefono = telefono;
     }
-
-    /**
-     * @param Activo the Activo to set
-     */
-    public void setActivo(int Activo) {
-        this.Activo = Activo;
+    public int getActivo()
+    {
+        return activo;
     }
-
-    /**
-     * @return the persona
-     */
-    public Persona getPersona() {
+    public void setActivo(int activo)
+    {
+        this.activo = activo;
+    }
+    public Persona getPersona()
+    {
         return persona;
     }
-
-    /**
-     * @param persona the persona to set
-     */
-    public void setPersona(Persona persona) {
+    public void setPersona(Persona persona)
+    {
         this.persona = persona;
-    }
-    private int IdCliente;
-    private String Email;
-    private String Telefono;
-    private int Activo;
-    private Persona persona;
+    }    
 }
