@@ -107,15 +107,16 @@ public class ControladorProducto
         pstmt.close();
         return productos;
     }
-    public ObservableList<Producto> getAl(String filtro) throws Exception
+    public ObservableList<Producto> getAl(Producto prod) throws Exception
     {
-        String sql = "SELECT * FROM Producto WHERE Nombre = " + filtro;
-        ObservableList<Producto> productos = FXCollections.observableArrayList();
-        Producto p = null;
         Marca m = null;
+        Producto p = null;
+        ObservableList<Producto> productos = FXCollections.observableArrayList();
+        String sql = "{call pa_busqProducto(?)}";
         ConexionSQLServer connSQLServer = new ConexionSQLServer();
-        PreparedStatement pstmt = connSQLServer.abrir().prepareCall(sql);
-        ResultSet rs = pstmt.executeQuery();
+        CallableStatement cstmt = connSQLServer.abrir().prepareCall(sql);
+        cstmt.setString(1, prod.getNombre());
+        ResultSet rs = cstmt.executeQuery();
         while(rs.next())
         {
             p = new Producto();
@@ -128,12 +129,11 @@ public class ControladorProducto
             p.setStock(rs.getInt("Stock"));
             m = new Marca();
             m.setIdMarca(rs.getInt("IdMarca"));
-            m.setNombre(rs.getString("NombreM"));
             p.setMarca(m);
             productos.add(p);
         }
         rs.close();
-        pstmt.close();
+        cstmt.close();
         return productos;
     }
 }
