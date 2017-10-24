@@ -12,6 +12,7 @@ GO
 		   P.Descripcion,
 		   P.Precio,
 		   P.Stock,
+		   M.IdMarca,
 		   M.NombreM
 	from Producto P INNER JOIN Marca M on M.IdMarca = P.IdMarca
 	WHERE P.Activo > 0;
