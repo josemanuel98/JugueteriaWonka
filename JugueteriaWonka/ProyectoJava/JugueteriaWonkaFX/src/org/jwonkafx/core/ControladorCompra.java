@@ -6,17 +6,25 @@ public class ControladorCompra
 {
     public void Insert(Bitacora b) throws Exception
     {
-        /*                              1  2  3  4  5  7  8  9  10 11*/
-        String sql = "{call pa_insVenta(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
+        /*                                  1  2*/
+        String sql = "{call pa_insBitacora (?, ?)}";
         ConexionSQLServer connSQLServer = new ConexionSQLServer();
-        CallableStatement cstmt= connSQLServer.abrir().prepareCall(sql);
+        CallableStatement cstmt = connSQLServer.abrir().prepareCall(sql);
         cstmt.setString(1, b.getFechaAbastecimiento());
         cstmt.registerOutParameter(2, java.sql.Types.INTEGER);
+        cstmt.executeUpdate();
         b.setIdBitacora(cstmt.getInt(2));
-        cstmt.setInt(3, b.getCantidad());
-        cstmt.setInt(4, b.getPrecioCompra());
-        cstmt.setInt(5, b.getProducto().getIdProducto());
         cstmt.close();
+        connSQLServer.cerrar();
+        /*                                       1  2  3  4*/
+        String sq = "{call pa_insBitacoraDetalle(?, ?, ?, ?)}";
+        ConexionSQLServer connSQLServe = new ConexionSQLServer();
+        CallableStatement cstm= connSQLServe.abrir().prepareCall(sq);
+        cstm.setInt(1, b.getCantidad());
+        cstm.setInt(2, b.getPrecioCompra());
+        cstm.setInt(4, b.getIdBitacora());
+        cstm.setInt(4, b.getProducto().getIdProducto());
+        cstm.close();
         connSQLServer.cerrar();
     }
 }
